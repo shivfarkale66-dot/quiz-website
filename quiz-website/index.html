@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeQuiz Pro — Master Programming</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Animated Background -->
+<div class="bg-animated"></div>
+<div class="grid-overlay"></div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Confetti Container -->
+<div class="confetti" id="confetti-container"></div>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar" id="navbar-user" style="display:none">
+  <div class="nav-logo">⚡ CodeQuiz Pro</div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="goHome()">🏠 Home</button>
+    <button class="nav-link" onclick="showProfile()">👤 Profile</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user">
+      <div class="user-avatar" id="nav-avatar">U</div>
+      <span id="nav-username">User</span>
+    </div>
+    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+  </div>
+</nav>
+
+<nav class="navbar" id="navbar-admin" style="display:none">
+  <div class="nav-logo">⚡ CodeQuiz Pro</div>
+  <div class="nav-links">
+    <span style="color:var(--accent);font-weight:700;letter-spacing:1px">🛡 ADMIN PANEL</span>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user">
+      <div class="user-avatar" id="admin-avatar">A</div>
+      <span id="admin-name">Admin</span>
+    </div>
+    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="page active" id="page-login">
+  <div class="auth-container">
+    <div class="auth-box">
+      <div class="auth-logo">
+        <div class="logo-icon">⚡</div>
+        <h1>CodeQuiz Pro</h1>
+        <p>Master Programming Through Practice</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login">🔑 Login</button>
+        <button class="auth-tab" id="tab-register">📝 Register</button>
+        <button class="auth-tab" id="tab-admin">🛡 Admin</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="form-login" class="auth-form">
+        <div id="alert-login" class="alert" style="display:none"></div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" placeholder="tumhara@email.com">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-pass" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" id="btn-login">🚀 Login Karo</button>
+        <div class="auth-alt">Account nahi hai? <a href="#" onclick="switchTab('register')">Register karo</a></div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="form-register" class="auth-form" style="display:none">
+        <div id="alert-register" class="alert" style="display:none"></div>
+        <div class="form-group">
+          <label>Poora Naam</label>
+          <input type="text" id="reg-name" placeholder="Tumhara naam">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="reg-email" placeholder="tumhara@email.com">
+        </div>
+        <div class="form-group">
+          <label>College/University</label>
+          <input type="text" id="reg-college" placeholder="Tumhara college naam">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="reg-pass" placeholder="Kam se kam 6 characters">
+        </div>
+        <div class="form-group">
+          <label>Password Confirm Karo</label>
+          <input type="password" id="reg-pass2" placeholder="Password dobara likho">
+        </div>
+        <button class="btn btn-primary" id="btn-register">✅ Account Banao</button>
+        <div class="auth-alt">Pehle se account hai? <a href="#" onclick="switchTab('login')">Login karo</a></div>
+      </div>
+
+      <!-- Admin Form -->
+      <div id="form-admin" class="auth-form" style="display:none">
+        <div id="alert-admin" class="alert" style="display:none"></div>
+        <div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:10px;padding:12px;margin-bottom:20px;font-size:0.9rem;color:#a78bfa;">
+          🔐 Demo: admin@quiz.com / admin123
+        </div>
+        <div class="form-group">
+          <label>Admin Email</label>
+          <input type="email" id="admin-email" placeholder="admin@quiz.com">
+        </div>
+        <div class="form-group">
+          <label>Admin Password</label>
+          <input type="password" id="admin-pass" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" id="btn-admin-login">🛡 Admin Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page" id="page-home">
+  <!-- Hero -->
+  <section class="home-hero">
+    <div class="hero-badge">🎯 Programming Quiz Platform</div>
+    <h1 class="hero-title">
+      Namaste, <span class="highlight" id="home-username">User</span>!<br>
+      Code Seekho, <span class="highlight">Master Bano</span>
+    </h1>
+    <p class="hero-subtitle">150+ carefully crafted questions across React, Python, Java & DSA. Quiz do, score pao, resume mein add karo!</p>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">150+</div><div class="stat-label">Questions</div></div>
+      <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Topics</div></div>
+      <div class="stat-item"><div class="stat-num">30s</div><div class="stat-label">Per Question</div></div>
+      <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Attempts</div></div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section class="topics-section">
+    <h2 class="section-title">📚 Topics Chunno</h2>
+    <div class="topics-grid">
+      <div class="topic-card react" data-topic="react">
+        <span class="topic-icon">⚛️</span>
+        <div class="topic-name">React JS</div>
+        <div class="topic-desc">Hooks, Components, State Management, Virtual DOM aur bahut kuch seekho.</div>
+        <div class="topic-meta">
+          <span class="topic-badge">30 Questions</span>
+          <span class="topic-badge">Easy → Hard</span>
+        </div>
+      </div>
+      <div class="topic-card python" data-topic="python">
+        <span class="topic-icon">🐍</span>
+        <div class="topic-name">Python</div>
+        <div class="topic-desc">OOP, decorators, generators, list comprehensions aur Python ki duniya.</div>
+        <div class="topic-meta">
+          <span class="topic-badge">35 Questions</span>
+          <span class="topic-badge">Easy → Hard</span>
+        </div>
+      </div>
+      <div class="topic-card java" data-topic="java">
+        <span class="topic-icon">☕</span>
+        <div class="topic-name">Java</div>
+        <div class="topic-desc">OOP, Collections, Multithreading, Exception handling - Java ka full package.</div>
+        <div class="topic-meta">
+          <span class="topic-badge">30 Questions</span>
+          <span class="topic-badge">Easy → Hard</span>
+        </div>
+      </div>
+      <div class="topic-card dsa" data-topic="dsa">
+        <span class="topic-icon">🧮</span>
+        <div class="topic-name">DSA & Algorithms</div>
+        <div class="topic-desc">Arrays, Trees, Graphs, Sorting, Dynamic Programming - interview ki taiyari karo!</div>
+        <div class="topic-meta">
+          <span class="topic-badge">30 Questions</span>
+          <span class="topic-badge">Easy → Hard</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard -->
+  <section class="leaderboard-section">
+    <h2 class="section-title">🏆 Top Performers</h2>
+    <div class="leaderboard-table">
+      <div class="lb-header">
+        <span>Rank</span>
+        <span>Naam</span>
+        <span>Score</span>
+        <span>Topic</span>
+        <span>Badge</span>
+      </div>
+      <div id="lb-body">
+        <div class="empty-state"><div class="empty-icon">🏆</div><p>Loading...</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ==================== QUIZ PAGE ==================== -->
+<div class="page" id="page-quiz">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div>
+        <div class="quiz-title" id="quiz-topic-name">Quiz</div>
+        <div style="color:var(--text-secondary);font-size:0.9rem" id="quiz-q-num">Q1 / 15</div>
+      </div>
+      <div class="quiz-progress-bar">
+        <div class="progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="quiz-info">
+      <div class="info-chip">
+        <span class="timer" id="quiz-timer">⏱ 30s</span>
+      </div>
+      <div class="info-chip">📊 15 Questions</div>
+    </div>
+
+    <div class="question-card">
+      <div class="q-number" id="quiz-q-number">Question 1 of 15</div>
+      <span class="q-diff" id="quiz-q-diff">Easy</span>
+      <div class="q-text" id="quiz-q-text">Loading question...</div>
+      <div class="options" id="quiz-options"></div>
+    </div>
+
+    <div class="quiz-nav">
+      <button class="btn-quiz" style="padding:14px 20px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);border-radius:12px;cursor:pointer;font-family:Rajdhani,sans-serif;font-size:1rem" onclick="confirmQuit()">❌ Quit</button>
+      <button class="btn-quiz btn-next" id="btn-next" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== RESULT PAGE ==================== -->
+<div class="page" id="page-result">
+  <div class="result-container">
+    <div class="result-card">
+      <div style="position:relative;display:inline-block;margin-bottom:30px">
+        <div class="score-circle" id="score-circle" style="--score-deg:0deg">
+          <div class="score-inner">
+            <div class="score-percent" id="score-percent">0%</div>
+            <div class="score-label">Score</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grade" id="result-grade">🎯 CALCULATING...</div>
+      <div class="result-msg" id="result-msg">Tumhara result aa raha hai...</div>
+
+      <div class="result-stats">
+        <div class="result-stat">
+          <div class="result-stat-num" id="result-correct" style="color:var(--accent-green)">0</div>
+          <div class="result-stat-label">✅ Sahi</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num" id="result-wrong" style="color:var(--accent-red)">0</div>
+          <div class="result-stat-label">❌ Galat</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num" id="result-skipped" style="color:var(--accent3)">0</div>
+          <div class="result-stat-label">⏭ Skip</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num" id="result-time" style="color:var(--accent2)">0s</div>
+          <div class="result-stat-label">⏱ Time</div>
+        </div>
+      </div>
+
+      <!-- Resume Section -->
+      <div class="resume-section">
+        <div class="resume-title">📄 RESUME KE LIYE COPY KARO</div>
+        <pre class="resume-code" id="resume-text"></pre>
+      </div>
+
+      <div class="result-actions">
+        <button class="btn-action btn-primary-action" onclick="copyResume()">📋 Resume Copy</button>
+        <button class="btn-action btn-primary-action" onclick="goHome()">🏠 Home</button>
+        <button class="btn-action btn-secondary-action" onclick="showProfile()">📊 My Stats</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== PROFILE PAGE ==================== -->
+<div class="page" id="page-profile">
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar" id="profile-avatar-letter">U</div>
+      <div>
+        <h2 id="profile-name">User Name</h2>
+        <p id="profile-email">email@example.com</p>
+        <p style="color:var(--accent);margin-top:4px" id="profile-college">College Name</p>
+        <div class="profile-stats">
+          <div class="profile-stat">
+            <div class="profile-stat-num" id="profile-total-q">0</div>
+            <div class="profile-stat-label">Total Quizzes</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-num" id="profile-best">0%</div>
+            <div class="profile-stat-label">Best Score</div>
+          </div>
+          <div class="profile-stat">
+            <div class="profile-stat-num" id="profile-joined">-</div>
+            <div class="profile-stat-label">Joined</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="history-section">
+      <div class="history-title">📊 Quiz History</div>
+      <div id="profile-history"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN PAGE ==================== -->
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <ul class="admin-menu">
+        <li><button class="admin-menu-item active" onclick="showAdminPanel('dashboard')">📊 Dashboard</button></li>
+        <li><button class="admin-menu-item" onclick="showAdminPanel('users')">👥 Users</button></li>
+        <li><button class="admin-menu-item" onclick="showAdminPanel('scores')">🏆 Scores</button></li>
+        <li><button class="admin-menu-item" onclick="showAdminPanel('questions')">❓ Questions</button></li>
+      </ul>
+    </div>
+
+    <!-- Content -->
+    <div class="admin-content">
+
+      <!-- Dashboard Panel -->
+      <div class="admin-panel active" id="panel-dashboard">
+        <div class="admin-header">
+          <h2>📊 Dashboard Overview</h2>
+          <p>Platform ka overall summary dekho</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-icon">👥</div>
+            <div class="stat-card-num" id="stat-users">0</div>
+            <div class="stat-card-label">Registered Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">📝</div>
+            <div class="stat-card-num" id="stat-quizzes">0</div>
+            <div class="stat-card-label">Quizzes Attempted</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">❓</div>
+            <div class="stat-card-num" id="stat-questions">0</div>
+            <div class="stat-card-label">Total Questions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">📈</div>
+            <div class="stat-card-num" id="stat-avg">0%</div>
+            <div class="stat-card-label">Average Score</div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:15px;padding:25px">
+          <h3 style="font-family:Orbitron,monospace;margin-bottom:15px;font-size:1rem">📌 Quick Info</h3>
+          <div style="display:grid;gap:12px;color:var(--text-secondary);font-size:0.95rem;line-height:1.8">
+            <div>✅ Platform mein 4 topics hain: React, Python, Java, DSA</div>
+            <div>✅ Har quiz mein 15 random questions hote hain</div>
+            <div>✅ Har question ke liye 30 second milte hain</div>
+            <div>✅ Score calculate hota hai — 90%+ Master, 75%+ Expert, 60%+ Proficient</div>
+            <div>✅ Users apna score resume mein add kar sakte hain</div>
+            <div>✅ Admin custom questions add kar sakta hai</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Panel -->
+      <div class="admin-panel" id="panel-users">
+        <div class="admin-header">
+          <h2>👥 Registered Users</h2>
+          <p>Saare registered users ki list</p>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Naam</th><th>Email</th><th>Role</th><th>College</th><th>Joined</th><th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Scores Panel -->
+      <div class="admin-panel" id="panel-scores">
+        <div class="admin-header">
+          <h2>🏆 All Quiz Scores</h2>
+          <p>Sabse recent 50 quiz results</p>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th><th>Topic</th><th>Score</th><th>Result</th><th>Time</th><th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="admin-scores-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Questions Panel -->
+      <div class="admin-panel" id="panel-questions">
+        <div class="admin-header">
+          <h2>❓ Manage Questions</h2>
+          <p>Custom questions add aur manage karo</p>
+        </div>
+
+        <button class="btn-add-q" onclick="toggleAddQuestion()">➕ Naya Question Add Karo</button>
+
+        <!-- Add Question Form -->
+        <div class="q-form" id="q-form">
+          <h3 style="font-family:Orbitron,monospace;font-size:1rem;margin-bottom:20px;color:var(--accent)">New Question</h3>
+          <div class="form-group">
+            <label>Question Text</label>
+            <input type="text" id="q-text" placeholder="Yahan apna question likho...">
+          </div>
+          <div class="q-form-grid">
+            <div class="form-group">
+              <label>Topic</label>
+              <select id="q-topic">
+                <option value="react">React JS</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="dsa">DSA</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Difficulty</label>
+              <select id="q-diff">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+          </div>
+          <div class="q-form-grid">
+            <div class="form-group">
+              <label>Option A</label>
+              <input type="text" id="q-opt1" placeholder="Pehla option">
+            </div>
+            <div class="form-group">
+              <label>Option B</label>
+              <input type="text" id="q-opt2" placeholder="Doosra option">
+            </div>
+            <div class="form-group">
+              <label>Option C</label>
+              <input type="text" id="q-opt3" placeholder="Teesra option">
+            </div>
+            <div class="form-group">
+              <label>Option D</label>
+              <input type="text" id="q-opt4" placeholder="Chotha option">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Sahi Answer (Index 0-3)</label>
+            <select id="q-correct">
+              <option value="0">A (pehla option)</option>
+              <option value="1">B (doosra option)</option>
+              <option value="2">C (teesra option)</option>
+              <option value="3">D (chotha option)</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:12px">
+            <button class="btn-add-q" style="margin:0" onclick="saveQuestion()">💾 Save Question</button>
+            <button class="btn-add-q" style="margin:0;background:transparent;border:1px solid var(--border);color:var(--text-secondary)" onclick="toggleAddQuestion()">Cancel</button>
+          </div>
+        </div>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Question</th><th>Topic</th><th>Difficulty</th><th>Action</th></tr>
+            </thead>
+            <tbody id="admin-q-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ==================== QUIZ CONFIRM MODAL ==================== -->
+<div class="modal-overlay" id="quiz-modal">
+  <div class="modal">
+    <div style="font-size:3rem;margin-bottom:15px">🎯</div>
+    <h3>Quiz Shuru Karo?</h3>
+    <p><strong id="modal-topic-name">Topic</strong> ke 15 random questions honge.<br>Har question ke liye 30 seconds milenge.</p>
+    <div class="modal-btns">
+      <button class="btn-action btn-secondary-action" onclick="closeModal()">Cancel</button>
+      <button class="btn-action btn-primary-action" id="modal-confirm">🚀 Chalo Shuru!</button>
+    </div>
+  </div>
+</div>
+
+<!-- Quit Quiz Modal -->
+<div class="modal-overlay" id="quit-modal">
+  <div class="modal">
+    <div style="font-size:3rem;margin-bottom:15px">⚠️</div>
+    <h3>Quiz Quit Karna Chahte Ho?</h3>
+    <p>Tumhari progress save nahi hogi!</p>
+    <div class="modal-btns">
+      <button class="btn-action btn-secondary-action" onclick="document.getElementById('quit-modal').classList.remove('active')">Nahi, Jaari Rakho</button>
+      <button class="btn-action" style="background:var(--accent-red);color:white;border:none;padding:14px 28px;border-radius:12px;cursor:pointer;font-family:Rajdhani,sans-serif;font-size:1rem;font-weight:700" onclick="quitQuiz()">Haan, Quit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="data/questions.js"></script>
+<script src="js/app.js"></script>
+<script>
+  function confirmQuit() { document.getElementById('quit-modal').classList.add('active'); }
+  function quitQuiz() {
+    clearInterval(APP.currentQuiz.timer);
+    document.getElementById('quit-modal').classList.remove('active');
+    goHome();
+  }
+</script>
+</body>
+</html>
